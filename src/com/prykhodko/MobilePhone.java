@@ -1,3 +1,10 @@
+/////////////////////////////////////////////////////////////////////
+// The MobilePhone class is used to do some manipulations on the   //
+// Contacts object, such as add a new contact, update it or remove.//
+//                                                                 //
+////////////////////////////////////////////////////////////////////
+
+
 package com.prykhodko;
 
 import java.util.ArrayList;
@@ -12,10 +19,15 @@ public class MobilePhone {
 
     }
 
-    public void printContacts(){
-        for(int i=0; i<contact.size(); i++){
-            System.out.println("The contact # " + (i + 1) + " is: " + contact.get(i).getName() + contact.get(i).getPhoneNumber());
+    public void printContacts() {
+        if (contact.size() == 0) {
+            System.out.println("The Phone Book is empty");
+        } else{
+            System.out.println("The Phone Book contacts: ");
+        for (int i = 0; i < contact.size(); i++) {
+            System.out.println("The contact # " + (i + 1) + " is: " + contact.get(i).getName() + " "+ contact.get(i).getPhoneNumber());
         }
+    }
     }
 
     /**
@@ -33,11 +45,17 @@ public class MobilePhone {
         return true;
     }
 
+    /**
+     * Updates an existing contact with the new fields' values
+     * @param oldContact
+     * @param newContact
+     * @return
+     */
     public boolean updateContact(Contacts oldContact, Contacts newContact){
         int contactPosition = searchContact(oldContact);
 
-        if(contactPosition <=0){
-            System.out.println(oldContact.getName() + " is not in the Phone book");
+        if(contactPosition <0){
+            System.out.println(oldContact.getName() + " is not on the Phone book");
             return false;
         }
 
@@ -46,19 +64,24 @@ public class MobilePhone {
         return true;
     }
 
-    public void removeContact(String name, String phone) {
-        int positionName = searchContact(name);
-        int positionPhone = searchContact(phone);
+    /**
+     * Removes the existing contact
+     * @param contact
+     */
+    public void removeContact(Contacts contact) {
+        int position = searchContact(contact);
 
-        if (positionName >= 0 || positionPhone >= 0) {
-            removeContact(positionName);
-            removeContact(positionPhone);
+        if (position >= 0) {
+            this.contact.remove(position);
+            System.out.println(contact.getName() + " was removed from the phone Book");
         }
     }
 
-    public void removeContact(int position){
-            contact.remove(position);
-        }
+    /**
+     * Searches an existing contact
+     * @param contact
+     * @return
+     */
 
     public int searchContact(Contacts contact){
         return this.contact.indexOf(contact);
@@ -77,12 +100,20 @@ public class MobilePhone {
     }
 
     public String queryContact(Contacts contact){
-//        String contactName = contact.getName();
         Optional<String> person = Optional.of(contact.getName());
         if(searchContact(contact) >=0){
             return person.get();
         }
         return Optional.empty().toString();
+
+    }
+
+    public Contacts queryContact(String name){
+        int position = searchContact(name);
+        if(position >=0){
+            return this.contact.get(position);
+        }
+        return null;
     }
 
 

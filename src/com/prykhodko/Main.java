@@ -1,3 +1,10 @@
+/////////////////////////////////////////////////////////////
+// Main class is used to test the work of the MobilePhone  //
+// class.                                                  //
+/////////////////////////////////////////////////////////////
+
+
+
 package com.prykhodko;
 
 import java.util.Scanner;
@@ -29,13 +36,13 @@ public class Main {
                     addContact();
                     break;
                 case 3:
-//                    modifyContact();
+                    updateContact();
                     break;
                 case 4:
-//                    removeContact();
+                    removeContact();
                     break;
                 case 5:
-//                    searchContact();
+                    queryContact();
                     break;
                 case 6:
                     quit = true;
@@ -57,13 +64,53 @@ public class Main {
         System.out.println("Choose the number to start: ");
     }
 
-//    private static void
 
     public static void addContact(){
-        System.out.println("Add new contact: ");
-//        phones.addContact(scanner.nextLine());
+        System.out.println("Add new contact's name: ");
+        String contactName = scanner.nextLine();
+        System.out.println("Add new phone number: ");
+        String contactPhone = scanner.nextLine();
+        Contacts newContact = Contacts.newContact(contactName, contactPhone);
+        phones.addContact(newContact);
+
+
     }
 
+    private static void updateContact(){
+        System.out.println("Enter the name of the contact that should be updated: ");
+        String existingContactName = scanner.nextLine();
+        Contacts existingContact = phones.queryContact(existingContactName);
+        if(existingContact != null){
+            System.out.println("Enter new name for the contact");
+            String newContactName = scanner.nextLine();
+            System.out.println("Enter new phone number for the contact");
+            String newContactPhone = scanner.nextLine();
+            Contacts newContact = Contacts.newContact(newContactName, newContactPhone);
+            phones.updateContact(existingContact, newContact);
+        }else {
+            System.out.println("There is now contact with the name " + existingContactName + " in the Phone Book.");
 
+        }
+    }
 
+    private static void removeContact() {
+        System.out.println("Enter the name of the contact that should be removed: ");
+        String existingContactName = scanner.nextLine();
+        Contacts existingContact = phones.queryContact(existingContactName);
+        if(existingContact == null){
+            System.out.println("There is now contact with the name " + existingContactName + " in the Phone Book.");
+        }
+        phones.removeContact(existingContact);
+    }
+
+    private static void queryContact(){
+        System.out.println("Enter the name of the existing contact");
+        String existingContactName = scanner.nextLine();
+        Contacts existingContact = phones.queryContact(existingContactName);
+        if(existingContact == null){
+            System.out.println("There is now contact with the name " + existingContactName + " in the Phone Book.");
+        }else{
+            System.out.println("The name is: " + existingContact.getName() + " Phone number is: " + existingContact.getPhoneNumber());
+        }
+    }
 }
